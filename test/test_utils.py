@@ -1,9 +1,8 @@
-from __future__ import print_function
 import numpy as np
 from numpy import testing as npt
 from numpy.linalg import norm
 from nose.tools import assert_less_equal, assert_almost_equal
-import utils
+from simtools import utils
 
 np.set_printoptions(precision=4, suppress=True)
 
