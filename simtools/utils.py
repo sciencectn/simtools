@@ -210,14 +210,19 @@ def cart2pol(x, y):
     rho = np.hypot(x, y)
     return theta, rho
 
-def pol2cart(theta, rho):
+def pol2cart(theta, rho, units="radians"):
     """
     Polar to cartesian
 
     :param theta:
     :param rho:
+    :param radians:
     :return:
     """
+    if units=="degrees":
+        theta = np.radians(theta)
+    else:
+        assert units=="radians","Unknown angle units"
     x = rho * np.cos(theta)
     y = rho * np.sin(theta)
     return np.array([x, y], dtype=float)
