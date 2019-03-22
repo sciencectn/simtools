@@ -244,4 +244,7 @@ def make_lattice(*iterables):
     flat = [g.flatten() for g in grids]
     return np.array(flat).T
 
+def wraptopi(angles):
+    return (angles + np.pi) % (2 * np.pi ) - np.pi
+
 
