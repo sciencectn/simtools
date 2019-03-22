@@ -223,6 +223,7 @@ def pol2cart(theta, rho, units="radians"):
         theta = np.radians(theta)
     else:
         assert units=="radians","Unknown angle units"
+
     x = rho * np.cos(theta)
     y = rho * np.sin(theta)
     return np.array([x, y], dtype=float)
@@ -248,5 +249,8 @@ def make_lattice(*iterables):
     grids = np.meshgrid(*iterables)
     flat = [g.flatten() for g in grids]
     return np.array(flat).T
+
+def wraptopi(angles):
+    return (angles + np.pi) % (2 * np.pi ) - np.pi
 
 
