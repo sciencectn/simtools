@@ -80,3 +80,9 @@ def test_vec_reject():
                                 [0.5,0.5]
                             ]))
 
+def test_wrap_pi():
+    angles = (np.random.rand(100)-0.5)*8*np.pi
+    wrapped = utils.wraptopi(angles)
+    npt.assert_array_less(wrapped, 2*np.pi)
+    npt.assert_array_less(-2*np.pi, wrapped)
+
