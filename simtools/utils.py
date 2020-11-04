@@ -252,9 +252,10 @@ def make_lattice(*iterables):
 
 def wraptopi(angles):
     """
-    Put all angles (in radians) in the range -2 pi..2 pi
+    Put all angles (in radians) in the range -pi..pi
 
     :param angles: numpy vector or array
     :return:
     """
-    return (angles + np.pi) % (2 * np.pi ) - np.pi
+    twopi = 2*np.pi
+    return (angles % twopi + np.pi) % (2 * np.pi) - np.pi
