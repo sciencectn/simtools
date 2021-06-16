@@ -1,7 +1,8 @@
+from math import sin, cos
+
 import numpy as np
-from numpy.linalg import norm
 import pyquaternion
-from math import sin,cos
+from numpy.linalg import norm
 
 """
 Random useful utilities that don't belong to any 
@@ -10,12 +11,13 @@ particular Python module
 
 import time
 
+
 class IntervalTimer(object):
     """
     A surprisingly useful class to schedule something at even intervals
     """
 
-    def __init__(self, interval, skip_lags = True, force_skip = 10, rostime=False, fake_time=False):
+    def __init__(self, interval, skip_lags=True, force_skip=10, rostime=False, fake_time=False):
         """
         :param interval: Interval to delay for
         :param skip_lags: Don't catch up to missed intervals. If this is false and you fail to check in
@@ -77,7 +79,6 @@ class IntervalTimer(object):
         self._interval = i
 
 
-
 def normalize(vec):
     """
     Make the magnitude of a vector or list of vectors 1
@@ -85,17 +86,18 @@ def normalize(vec):
     :param vec:
     :return:
     """
-    if vec.ndim==1:
+    if vec.ndim == 1:
         n = norm(vec)
-        if n==0:
-            n=1
+        if n == 0:
+            n = 1
         return vec / n
-    n = norm(vec,axis=1)
-    n[n==0] = 1
+    n = norm(vec, axis=1)
+    n[n == 0] = 1
     n = np.expand_dims(n, axis=1)
     return vec / n
 
-def cosdist(A,B):
+
+def cosdist(A, B):
     """
     Cosine of angle between A and B
     :param A:
@@ -103,7 +105,6 @@ def cosdist(A,B):
     :return:
     """
     return np.dot(normalize(A), normalize(B))
-
 
 
 def vec_reject(V, F):
@@ -117,8 +118,8 @@ def vec_reject(V, F):
     :return: Component of F not on V
     """
     vh = normalize(V)
-    dots = np.expand_dims(np.sum(F*vh,axis=1),axis=1)
-    return F - dots*vh
+    dots = np.expand_dims(np.sum(F * vh, axis=1), axis=1)
+    return F - dots * vh
 
 
 def clip_norm(vec, nmax):
@@ -130,15 +131,15 @@ def clip_norm(vec, nmax):
     :param nmax:
     :return:
     """
-    if vec.ndim==1:
+    if vec.ndim == 1:
         n = norm(vec)
-        if n==0:
-            n=1
+        if n == 0:
+            n = 1
         nvec = vec / n
         n = np.clip(n, 0, nmax)
         return nvec * n
-    n = np.expand_dims(norm(vec,axis=1), axis=1)
-    n[n==0]=1
+    n = np.expand_dims(norm(vec, axis=1), axis=1)
+    n[n == 0] = 1
     nvec = vec / n
     n = np.clip(n, 0, nmax)
     return nvec * n
@@ -160,7 +161,8 @@ def az_el_vec(azimuth, elevation):
     vrot = q.rotate(v)
     return vrot
 
-def vecs2rot(v1,v2):
+
+def vecs2rot(v1, v2):
     """
     Get the rotation that would have to be applied to
     vector v1 to result in v2
@@ -171,12 +173,12 @@ def vecs2rot(v1,v2):
     """
     denom = norm(v1) * norm(v2)
     c = np.dot(v1, v2) / denom
-    if abs(c-1) < 1e-8:
+    if abs(c - 1) < 1e-8:
         # No rotation present, return null quaternion
         return pyquaternion.Quaternion()
     s = norm(np.cross(v1, v2)) / denom
-    angle = np.arctan2(s,c)
-    axis = normalize(np.cross(v1,v2))
+    angle = np.arctan2(s, c)
+    axis = normalize(np.cross(v1, v2))
     return pyquaternion.Quaternion(axis=axis, radians=angle)
 
 
@@ -189,14 +191,15 @@ def cart2sph(xyz):
     :return: azimuth, elevation, radius
 
     """
-    x=xyz[:,0]
-    y=xyz[:,1]
-    z=xyz[:,2]
+    x = xyz[:, 0]
+    y = xyz[:, 1]
+    z = xyz[:, 2]
     hxy = np.hypot(x, y)
     r = np.hypot(hxy, z)
     el = np.arctan2(hxy, z)
     az = np.arctan2(y, x)
     return az, el, r
+
 
 def cart2pol(x, y):
     """
@@ -210,6 +213,7 @@ def cart2pol(x, y):
     rho = np.hypot(x, y)
     return theta, rho
 
+
 def pol2cart(theta, rho, units="radians"):
     """
     Polar to cartesian
@@ -219,17 +223,17 @@ def pol2cart(theta, rho, units="radians"):
     :param radians:
     :return:
     """
-    if units=="degrees":
+    if units == "degrees":
         theta = np.radians(theta)
     else:
-        assert units=="radians","Unknown angle units"
+        assert units == "radians", "Unknown angle units"
 
     x = rho * np.cos(theta)
     y = rho * np.sin(theta)
     if np.isscalar(theta):
-        return np.array([x,y])
+        return np.array([x, y])
     else:
-        return np.column_stack((x,y))
+        return np.column_stack((x, y))
 
 
 def rotation_matrix(angle):
@@ -243,15 +247,17 @@ def rotation_matrix(angle):
     s = sin(angle)
 
     tf = np.array([
-        [c,-s],
-        [s,c]
+        [c, -s],
+        [s, c]
     ], dtype=np.float64)
     return tf
+
 
 def make_lattice(*iterables):
     grids = np.meshgrid(*iterables)
     flat = [g.flatten() for g in grids]
     return np.array(flat).T
+
 
 def wraptopi(angles):
     """
@@ -260,5 +266,5 @@ def wraptopi(angles):
     :param angles: numpy vector or array
     :return:
     """
-    twopi = 2*np.pi
+    twopi = 2 * np.pi
     return (angles % twopi + np.pi) % twopi - np.pi
