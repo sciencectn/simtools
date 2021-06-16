@@ -11,7 +11,7 @@ setup(
     author_email="sciencectn@gmail.com",
     url="https://github.com/sciencectn/simtools",
     description="A collection of functions to help with simulating and running particle simulations.",
-    version="0.0.2",
+    version="0.0.3",
     packages=find_packages(),
     install_requires=[
         "pyquaternion"

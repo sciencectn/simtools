@@ -226,7 +226,10 @@ def pol2cart(theta, rho, units="radians"):
 
     x = rho * np.cos(theta)
     y = rho * np.sin(theta)
-    return np.array([x, y], dtype=float)
+    if np.isscalar(theta):
+        return np.array([x,y])
+    else:
+        return np.column_stack((x,y))
 
 
 def rotation_matrix(angle):
@@ -258,4 +261,4 @@ def wraptopi(angles):
     :return:
     """
     twopi = 2*np.pi
-    return (angles % twopi + np.pi) % (2 * np.pi) - np.pi
+    return (angles % twopi + np.pi) % twopi - np.pi
