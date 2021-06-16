@@ -263,8 +263,18 @@ def wraptopi(angles):
     """
     Put all angles (in radians) in the range -pi..pi
 
-    :param angles: numpy vector or array
+    :param angles: numpy vector or scalar
     :return:
     """
     twopi = 2 * np.pi
     return (angles % twopi + np.pi) % twopi - np.pi
+
+
+def wrapto180(angles):
+    """
+    Put all angles (in degrees) in the range -180..180
+
+    :param angles: numpy vector or scalar
+    :return:
+    """
+    return (angles % 360 + 180) % 360 - 180

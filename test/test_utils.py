@@ -92,6 +92,12 @@ def test_wrap_pi():
     npt.assert_array_less(-np.pi, wrapped)
 
 
+def test_wrap_180():
+    angles = np.array([360.0, 361, -190, -370, -730])
+    wrapped = utils.wrapto180(angles)
+    npt.assert_almost_equal(wrapped, [0, 1, 170, -10, -10])
+
+
 def test_pol2cart():
     rho = [1,2,3]
     theta = np.radians([0, 90, 180])
@@ -106,3 +112,4 @@ def test_pol2cart():
 def test_pol2cart_scalar():
     xy = utils.pol2cart(np.pi/2, 1)
     npt.assert_almost_equal(xy, (0,1))
+
